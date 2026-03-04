@@ -6,3 +6,6 @@ node_modules/
 .env
 .envrc
 dist/
+data/
+*.jsonl
+bun.lockb
