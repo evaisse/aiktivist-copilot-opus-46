@@ -94,9 +94,10 @@ export function conversationPage(
           const lines = buffer.split('\\n');
           buffer = lines.pop() || '';
 
+          let currentEvent = '';
           for (const line of lines) {
             if (line.startsWith('event: ')) {
-              var currentEvent = line.slice(7);
+              currentEvent = line.slice(7);
             }
             if (line.startsWith('data: ')) {
               const data = JSON.parse(line.slice(6));

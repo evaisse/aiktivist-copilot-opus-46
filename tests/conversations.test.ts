@@ -104,12 +104,10 @@ describe("Conversations Service", () => {
     expect(msgs[2].content).toBe("How are you?");
   });
 
-  test("touchConversation updates timestamp", async () => {
+  test("touchConversation updates timestamp", () => {
     const conv = createConversation(userId);
-    const before = conv.updated_at;
-    await new Promise((r) => setTimeout(r, 1100)); // Wait >1 second for timestamp change
     touchConversation(conv.id);
     const after = getConversation(conv.id, userId)!.updated_at;
-    expect(after >= before).toBe(true);
+    expect(after >= conv.updated_at).toBe(true);
   });
 });
