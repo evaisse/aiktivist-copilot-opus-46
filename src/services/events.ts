@@ -10,11 +10,13 @@ export interface AppEvent {
   created_at?: string;
 }
 
-const JSONL_DIR = process.env.EVENTS_DIR || "./data";
+function getJsonlDir(): string {
+  return process.env.EVENTS_DIR || "./data";
+}
 
-function ensureJsonlDir(): void {
-  if (!existsSync(JSONL_DIR)) {
-    mkdirSync(JSONL_DIR, { recursive: true });
+function ensureJsonlDir(dir: string): void {
+  if (!existsSync(dir)) {
+    mkdirSync(dir, { recursive: true });
   }
 }
 
@@ -35,8 +37,9 @@ export function logEvent(event: Omit<AppEvent, "id" | "created_at">): AppEvent {
     .get(Number(result.lastInsertRowid)) as any;
 
   // Append to JSONL file
-  ensureJsonlDir();
-  const jsonlPath = join(JSONL_DIR, "events.jsonl");
+  const jsonlDir = getJsonlDir();
+  ensureJsonlDir(jsonlDir);
+  const jsonlPath = join(jsonlDir, "events.jsonl");
   const line = JSON.stringify({
     id: saved.id,
     conversation_id: saved.conversation_id,
